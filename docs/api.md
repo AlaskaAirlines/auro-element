@@ -1,9 +1,12 @@
 # auro-element
 
-AuroElement is a reusable web component written using Lit.
+Base class for Auro elements.
 
-### Methods
+### Properties & Attributes
 
-| Name     | Parameters                                         | Return | Description                                    |
-| -------- | -------------------------------------------------- | ------ | ---------------------------------------------- |
-| register | `name` (string) - Custom element name to register. |        | Registers the custom element with the browser. |
+| Properties | Attributes | Modifiers | Type    | Default   | Description                                       |
+| ---------- | ---------- | --------- | ------- | --------- | ------------------------------------------------- |
+| layout     | layout     |           | string  | `classic` | Defines the language of the element.              |
+| onDark     | ondark     |           | boolean | `false`   | Indicates if the element is on a dark background. |
+| shape      | shape      |           | string  | `classic` | Defines the shape of the element.                 |
+| size       | size       |           | string  | `lg`      | Defines the size of the element.                  |
