@@ -1,36 +1,129 @@
 import { LitElement } from "lit";
-import { html } from "lit/static-html.js";
-import AuroLibraryRuntimeUtils from "@aurodesignsystem/auro-library/scripts/utils/runtimeUtils.mjs";
-
-import componentTokens from "./styles/tokens.scss"
-import componentColor from "./styles/color.scss"
-import componentStyle from "./styles/style.scss"
+import shapeSizeCss from "./styles/shapeSize-css.js";
 
 /**
- * AuroElement is a reusable web component written using Lit.
- * @customElement auro-element
+ * Base class for Auro elements.
+ * 
+ * @attr layout - Defines the layout of the element.
+ * @attr shape - Defines the shape of the element.
+ * @attr size - Defines the size of the element.
+ * @attr onDark - Indicates if the element is on a dark background.
  */
-export class AuroElement extends LitElement {
 
-  /**
-   * Registers the custom element with the browser.
-   * @param {string} [name="auro-element"] - Custom element name to register.
-   * @example
-   * AuroElement.register("custom-element") // registers <custom-element/>
-   */
-  static register(name = "auro-element") {
-    AuroLibraryRuntimeUtils.prototype.registerComponent(name, AuroElement);
+export class AuroElement extends LitElement {
+  constructor() {
+    super();
+    this.layout = 'classic';
+    this.shape = 'classic';
+    this.size = 'lg';
+    this.onDark = false;
+  }
+
+  static get properties() {
+    return {
+
+      /**
+       * Defines the language of an element.
+       * @default {'default'}
+       */
+      layout: {
+        type: String,
+        attribute: "layout",
+        reflect: true
+      },
+
+      shape: {
+        type: String,
+        attribute: "shape",
+        reflect: true
+      },
+
+      size: {
+        type: String,
+        attribute: "size",
+        reflect: true
+      },
+
+      onDark: {
+        type: Boolean,
+        attribute: "ondark",
+        reflect: true
+      }
+    };
   }
 
   static get styles() {
-    return [componentTokens, componentColor, componentStyle];
+    return [
+      css`${shapeSizeCss}`
+    ];
   }
 
+  /**
+   * Returns true if the element has focus.
+   * @private
+   * @returns {boolean} - Returns true if the element has focus.
+   */
+  get componentHasFocus() {
+    return this.matches(':focus') || this.matches(':focus-within');
+  }
+
+  resetShapeClasses() {
+    const wrapper = this.shadowRoot.querySelector('.wrapper');
+
+    if (wrapper) {
+      wrapper.classList.forEach((className) => {
+        if (className.startsWith('shape-')) {
+          wrapper.classList.remove(className);
+        }
+      });
+
+      if (this.shape && this.size) {
+        wrapper.classList.add(`shape-${this.shape.toLowerCase()}-${this.size.toLowerCase()}`);
+      } else {
+        wrapper.classList.add('shape-none');
+      }
+    }
+
+  }
+
+  resetLayoutClasses() {
+    if (this.layout) {
+      const wrapper = this.shadowRoot.querySelector('.wrapper');
+
+      if (wrapper) {
+        wrapper.classList.forEach((className) => {
+          if (className.startsWith('layout-')) {
+            wrapper.classList.remove(className);
+          }
+        });
+
+        wrapper.classList.add(`layout-${this.layout.toLowerCase()}`);
+      }
+    }
+  }
+
+  updateComponentArchitecture() {
+    this.resetLayoutClasses();
+    this.resetShapeClasses();
+  }
+
+  updated(changedProperties) {
+    if (changedProperties.has('layout') || changedProperties.has('shape') || changedProperties.has('size')) {
+      this.updateComponentArchitecture();
+    }
+  }
+
+  // Try to render the defined `this.layout` layout. If that fails, fall back to the default layout.
+  // This will catch if an invalid layout value is passed in and render the default layout if so.
   render() {
-    return html`
-      <div>
-        <p>Hello AuroElement!</p>
-      </div>
-    `;
+    try {
+      return this.renderLayout();
+    } catch (error) {
+      // failed to get the defined layout
+      console.error('Failed to get the defined layout - using the default layout', error); // eslint-disable-line no-console
+
+      // fallback to the default layout
+      return this.getLayout('default');
+    }
   }
 }
