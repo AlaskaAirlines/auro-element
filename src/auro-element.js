@@ -113,6 +113,10 @@ export class AuroElement extends LitElement {
     }
   }
 
+  renderLayout() {
+    // no-op/default implementations - consuming elements should override this method
+  }
+
   // Try to render the defined `this.layout` layout. If that fails, fall back to the default layout.
   // This will catch if an invalid layout value is passed in and render the default layout if so.
   render() {
