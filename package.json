@@ -29,11 +29,6 @@
     "@aurodesignsystem/webcorestylesheets": "10.1.4",
     "husky": "^9.1.7"
   },
-  "overrides": {
-    "wc-sass-render": {
-      "sass": "$sass"
-    }
-  },
   "browserslist": [
     "last 2 Chrome versions",
     "last 2 iOS major versions",
@@ -41,12 +36,6 @@
     "last 2 Edge versions",
     "last 2 Safari major versions"
   ],
-  "nodemonConfig": {
-    "ignore": [
-      "*-css.js",
-      "*.css"
-    ]
-  },
   "publishConfig": {
     "access": "public",
     "provenance": true

@@ -1,18 +1,17 @@
 import { LitElement } from "lit";
-import shapeSizeCss from "./styles/shapeSize-css.js";
+import shapeSizeCss from "./styles/shapeSize.scss";
 
 /**
  * Base class for Auro elements.
- * 
- * @attr layout - Defines the layout of the element.
- * @attr shape - Defines the shape of the element.
- * @attr size - Defines the size of the element.
- * @attr onDark - Indicates if the element is on a dark background.
+ * @customElement auro-element
  */
-
 export class AuroElement extends LitElement {
   constructor() {
     super();
+    this._propertyDefaults();
+  }
+
+  _propertyDefaults() {
     this.layout = 'classic';
     this.shape = 'classic';
     this.size = 'lg';
@@ -23,8 +22,8 @@ export class AuroElement extends LitElement {
     return {
 
       /**
-       * Defines the language of an element.
-       * @default {'default'}
+       * Defines the language of the element.
+       * @default 'classic'
        */
       layout: {
         type: String,
@@ -32,18 +31,30 @@ export class AuroElement extends LitElement {
         reflect: true
       },
 
+      /**
+       * Defines the shape of the element.
+       * @default 'classic'
+       */
       shape: {
         type: String,
         attribute: "shape",
         reflect: true
       },
 
+      /**
+       * Defines the size of the element.
+       * @default 'lg'
+       */
       size: {
         type: String,
         attribute: "size",
         reflect: true
       },
 
+      /**
+       * Indicates if the element is on a dark background.
+       * @default false
+       */
       onDark: {
         type: Boolean,
         attribute: "ondark",
@@ -53,9 +64,7 @@ export class AuroElement extends LitElement {
   }
 
   static get styles() {
-    return [
-      css`${shapeSizeCss}`
-    ];
+    return [shapeSizeCss];
   }
 
   /**
